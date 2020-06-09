@@ -3899,9 +3899,6 @@ paths:
 
       
       
-      
-      
-      
 securityDefinitions:
   default:
     type: oauth2
