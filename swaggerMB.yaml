@@ -90,19 +90,26 @@ paths:
       summary: getToken
       description: Use this API to get token access.
       produces:
+        - application/json
         - application/x-www-form-urlencoded
+      consumes:
+        - application/x-www-form-urlencoded        
       parameters:
+        
         - in: header
           name: Authorization
           type: string
           description: Basic {Your Application Key}
           required: true
           enum: [Basic YXJrZFpwT0RjdnFLQ2FndW5Ee...] 
+          
         - in: header
           name: Content-Type
           type: string
           required: true
           default: application/x-www-form-urlencoded
+          
+          
         - in: body
           name: Payload
           description: Request Body
