@@ -56,9 +56,10 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-host: 192.168.1.244:8243
-basePath: /mb/1.0.0
+host: 192.168.1.228
+basePath: /call
 tags:
+
   - name: Deposit
     description: Everything about your Deposit
     externalDocs:
@@ -95,6 +96,7 @@ paths:
           name: Authorization    
           description: Your access token
           type: string
+          
         - in: body
           name: Payload
           description: Request Body
@@ -188,6 +190,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string      
         - in: body
           name: Payload
           description: Request Body
@@ -286,6 +292,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -513,6 +523,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -739,6 +753,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1043,6 +1061,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1210,6 +1232,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1365,6 +1391,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1488,6 +1518,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1733,6 +1767,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -1958,6 +1996,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -2231,6 +2273,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -2418,6 +2464,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -2576,6 +2626,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -2849,6 +2903,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -3017,6 +3075,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
@@ -3204,6 +3266,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string 
         - in: body
           name: Payload
           description: Request Body
