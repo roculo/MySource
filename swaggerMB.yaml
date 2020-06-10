@@ -586,8 +586,8 @@ paths:
                         - '99990111100000217'
                         - '99990111100000224'
                         - '99990111100000231'
-                      description: Account number. 9 digits format
-                      maxLength: 9
+                    description: Account number. 9 digits format
+                    maxLength: 9
                   ACCNAME:
                     type: array
                     items:
@@ -596,8 +596,8 @@ paths:
                         - Tin sary
                         - Tin sary
                         - Tin sary
-                      description: Account name
-                      maxLength: 50
+                    description: Account name
+                    maxLength: 50
                   DPTTYPE:
                     type: array
                     items:
@@ -606,13 +606,13 @@ paths:
                         - C
                         - C
                         - C
-                      description: Account status
-                      maxLength: 1
                       enum:
                        - 'T: Fixed deposit'
                        - 'S: Saving deposit'
                        - 'C: Current deposit'
-                       - '-: All'                     
+                       - '-: All'   
+                    description: Account status
+                    maxLength: 1                  
                   DPTSTS:
                     type: array
                     items:
@@ -621,14 +621,14 @@ paths:
                         - 'N'
                         - 'N'
                         - 'N'
-                      description: Account type
-                      maxLength: 1
                       enum:
                         - 'N: Normal' 
                         - 'B: Block'
                         - 'S: Suspense'
                         - 'C: Closed'
-                        - 'D: Dormant'                      
+                        - 'D: Dormant'   
+                    description: Account type
+                    maxLength: 1                   
                   BALANCE:
                     type: array
                     items:
@@ -637,8 +637,8 @@ paths:
                         - 1000
                         - 10000000
                         - 222252988
-                      description: Account balance
-                      maxLength: 25
+                    description: Account balance
+                    maxLength: 25
                   AVABALANCE:
                     type: array
                     items:
@@ -647,8 +647,8 @@ paths:
                         - 1000
                         - 10000000
                         - 222252988
-                      description: Available balance
-                      maxLength: 25
+                    description: Available balance
+                    maxLength: 25
                   CURRENCYID:
                     type: array
                     items:
@@ -657,13 +657,13 @@ paths:
                         - KHR
                         - KHR
                         - USD
-                      description: Currency
-                      maxLength: 3
                       enum:
                        - MMK
                        - USD
                        - LAK
-                       - '...'                      
+                       - '...'   
+                    description: Currency
+                    maxLength: 3                   
                   BRANID:
                     type: array
                     items:
@@ -672,8 +672,8 @@ paths:
                         - 203
                         - 203
                         - 203
-                      description: Branch ID
-                      maxLength: 4
+                    description: Branch ID
+                    maxLength: 4
                   ISPKACNO:
                     type: array
                     items:
@@ -682,11 +682,11 @@ paths:
                         - 'N'
                         - 'N'
                         - 'Y'
-                      description: Is this the primary account
-                      maxLength: 1
                       enum:
                        - 'Y: Yes'
-                       - 'N: No'                      
+                       - 'N: No'  
+                    description: Is this the primary account
+                    maxLength: 1                    
                   PHONENO:
                     type: string
                     example: 0923888333
@@ -1273,8 +1273,8 @@ paths:
                       example:
                         - '1234'
                         - '4321'
-                      description: Catalogue Code
-                      maxLength: 10
+                    description: Catalogue Code
+                    maxLength: 10
                   CATNAME:
                     type: array
                     items:
@@ -1282,8 +1282,8 @@ paths:
                       example:
                         - Saving 1
                         - Saving 2
-                      description: Catalogue Name
-                      maxLength: 100
+                    description: Catalogue Name
+                    maxLength: 100
                   STATUS:
                     type: array
                     items:
@@ -1291,11 +1291,11 @@ paths:
                       example:
                         - 'N'
                         - 'N'
-                      description: Catalogue Status
-                      maxLength: 1
                       enum:
                        - 'N: Normal'
                        - 'C: Closed'
+                    description: Catalogue Status
+                    maxLength: 1
                   CURRENCYID:
                     type: array
                     items:
@@ -1303,13 +1303,13 @@ paths:
                       example:
                         - KHR
                         - USD
-                      description: Currency ID
-                      maxLength: 3
                       enum:
                        - KHR
                        - USD
                        - THB
                        - '...'
+                    description: Currency ID
+                    maxLength: 3
                   CATDESCS:
                     type: array
                     items:
@@ -1317,8 +1317,8 @@ paths:
                       example:
                         - ''
                         - ''
-                      description: Catalogue Description
-                      maxLength: 100
+                    description: Catalogue Description
+                    maxLength: 100
         '501':
           description: Not implement
           schema:
@@ -1578,8 +1578,8 @@ paths:
                       example:
                         - TESTFUND1
                         - TESTFUND2
-                      description: Transaction Reference Number
-                      maxLength: 50                      
+                    description: Transaction Reference Number
+                    maxLength: 50                      
                   TRANTYPE:
                     type: array
                     items:
@@ -1587,8 +1587,8 @@ paths:
                       example:
                         - Fund transfer
                         - Fund transfer
-                      description: 'Transaction Type: Fund transfer, Cash deposit, Cash withdraw... '
-                      maxLength: 100     
+                    description: 'Transaction Type: Fund transfer, Cash deposit, Cash withdraw... '
+                    maxLength: 100     
                   TRANDATE:
                     type: array
                     items:
@@ -1596,10 +1596,10 @@ paths:
                       example:
                         - '13/02/2020 19:36:59'
                         - '13/02/2020 20:02:41'
-                      description: Transaction date
-                      maxLength: 20     
                       enum:
                        - 'DD/MM/YYYY HH24:MI:SS'
+                    description: Transaction date
+                    maxLength: 20     
                   DEBIT:
                     type: array
                     items:
@@ -1607,8 +1607,8 @@ paths:
                       example:
                         - 1000
                         - 1000
-                      description: Debit amount
-                      maxLength: 20     
+                    description: Debit amount
+                    maxLength: 20     
                   CREDIT:
                     type: array
                     items:
@@ -1616,8 +1616,8 @@ paths:
                       example:
                         - 0
                         - 0
-                      description: Credit amount
-                      maxLength: 20     
+                    description: Credit amount
+                    maxLength: 20     
                   CURRENCYID:
                     type: array
                     items:
@@ -1625,12 +1625,12 @@ paths:
                       example:
                         - KHR
                         - KHR
-                      description: Currency
-                      maxLength: 3     
                       enum:
                        - USD
                        - KHR
                        - '...'
+                    description: Currency
+                    maxLength: 3     
                   DESCRIPTION:
                     type: array
                     items:
@@ -1638,8 +1638,8 @@ paths:
                       example:
                         - Fund transfer
                         - Fund transfer
-                      description: Transaction description
-                      maxLength: 200     
+                    description: Transaction description
+                    maxLength: 200     
                   CBSID:
                     type: array
                     items:
@@ -1647,8 +1647,8 @@ paths:
                       example:
                         - '190914000008329769'
                         - '190914000008329776'
-                      description: Transaction Number on CBS
-                      maxLength: 50     
+                    description: Transaction Number on CBS
+                    maxLength: 50     
                   CHANNELID:
                     type: array
                     items:
@@ -1656,8 +1656,8 @@ paths:
                       example:
                         - JC
                         - JC
-                      description: 'Transaction Source. MB-> Mobile, O9-> Teller channel, AT: MPOS'
-                      maxLength: 2     
+                    description: 'Transaction Source. MB-> Mobile, O9-> Teller channel, AT: MPOS'
+                    maxLength: 2     
                   BALANCE:
                     type: array
                     items:
@@ -1665,8 +1665,8 @@ paths:
                       example:
                         - '2000'
                         - '2000'
-                      description: Account balance
-                      maxLength: 25     
+                    description: Account balance
+                    maxLength: 25     
                   FULLPAGE:
                     type: string
                     example: 'Y'
@@ -3075,8 +3075,8 @@ paths:
                       example:
                         - KHR
                         - USD
-                      description: Currency code  
-                      maxLength: 3
+                    description: Currency code  
+                    maxLength: 3
                   BKRATE:
                     type: array
                     items:
@@ -3084,8 +3084,8 @@ paths:
                       example:
                         - 0.000246002
                         - 1
-                      description: BK exchange rate
-                      maxLength: 24
+                    description: BK exchange rate
+                    maxLength: 24
                   TBRATE:
                     type: array
                     items:
@@ -3093,8 +3093,8 @@ paths:
                       example:
                         - 0.000245459
                         - 1
-                      description: TB exchange rate
-                      maxLength: 24
+                    description: TB exchange rate
+                    maxLength: 24
                   TARATE:
                     type: array
                     items:
@@ -3102,8 +3102,8 @@ paths:
                       example:
                         - 0.000243487
                         - 1
-                      description: TA exchange rate  
-                      maxLength: 24
+                    description: TA exchange rate  
+                    maxLength: 24
                   CBRATE:
                     type: array
                     items:
@@ -3111,8 +3111,8 @@ paths:
                       example:
                         - 0.000245459
                         - 1
-                      description: CB exchange rate 
-                      maxLength: 24
+                    description: CB exchange rate 
+                    maxLength: 24
                   CARATE:
                     type: array
                     items:
@@ -3120,8 +3120,8 @@ paths:
                       example:
                         - 0.000243487
                         - 1
-                      description: CA exchange rate  
-                      maxLength: 24
+                    description: CA exchange rate  
+                    maxLength: 24
                   CMRATE:
                     type: array
                     items:
@@ -3129,8 +3129,8 @@ paths:
                       example:
                         - 0
                         - 0
-                      description: CM exchange rate  
-                      maxLength: 24
+                    description: CM exchange rate  
+                    maxLength: 24
                   CSRATE:
                     type: array
                     items:
@@ -3138,8 +3138,8 @@ paths:
                       example:
                         - 0.000243487
                         - 1
-                      description: CS exchange rate 
-                      maxLength: 24
+                    description: CS exchange rate 
+                    maxLength: 24
                   INRATE:
                     type: array
                     items:
@@ -3147,8 +3147,8 @@ paths:
                       example:
                         - 0.000246002
                         - 1
-                      description: IN exchange rate  
-                      maxLength: 24
+                    description: IN exchange rate  
+                    maxLength: 24
                   JPRATE:
                     type: array
                     items:
@@ -3156,8 +3156,8 @@ paths:
                       example:
                         - 0.000246002
                         - 1
-                      description: JP exchange rate  
-                      maxLength: 24
+                    description: JP exchange rate  
+                    maxLength: 24
         '501':
           description: Not implement
           schema:
