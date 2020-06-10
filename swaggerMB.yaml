@@ -91,6 +91,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization    
+          description: Your access token
+          type: string
         - in: body
           name: Payload
           description: Request Body
