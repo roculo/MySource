@@ -4,7 +4,7 @@ info:
 
     # Overview
     
-    ➤ Jconnect is a web-service between Ebanking system and Core Banking system. It’ll create a connection and allow communicate between two systems. </br>
+    ➤ Jconnect iss a web-service between Ebanking system and Core Banking system. It’ll create a connection and allow communicate between two systems. </br>
     ➤ Ebanking will post transaction with xml format to O9Middleware, O9Middleware will convert/mapping request message from eBanking system to Core Banking transaction message format and perform transaction on Core Banking. After transaction finish on Core Banking, O9Middleware will forward transaction result to eBanking system. </br>
     ➤ Support multi threads to allow many transactions at the same time. </br>
     ➤ One transaction must be processed within 60 seconds, eBanking system will waiting response in 60 seconds. </br> 
