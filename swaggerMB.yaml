@@ -93,10 +93,12 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
+          name: Authorization
           type: string
-          
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
+            
         - in: body
           name: Payload
           description: Request Body
@@ -191,9 +193,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string      
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...]    
         - in: body
           name: Payload
           description: Request Body
@@ -293,9 +297,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -524,9 +530,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -754,9 +762,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1062,9 +1072,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1233,9 +1245,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1392,9 +1406,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1519,9 +1535,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1768,9 +1786,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -1997,9 +2017,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -2274,9 +2296,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -2465,9 +2489,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -2627,9 +2653,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -2904,9 +2932,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -3076,9 +3106,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
@@ -3267,9 +3299,11 @@ paths:
         - application/json
       parameters:
         - in: header
-          name: Authorization    
-          description: Your access token
-          type: string 
+          name: Authorization
+          type: string
+          description: Bearer {Your access token}
+          required: true
+          enum: [Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...] 
         - in: body
           name: Payload
           description: Request Body
