@@ -83,6 +83,89 @@ schemes:
 security:
   - default: []
 paths:
+  /token:
+    post:
+      tags:
+        - Deposit
+      summary: getToken
+      description: Use this API to get token access.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Basic {Your Application Key}
+          required: true
+          enum: [Basic YXJrZFpwT0RjdnFLQ2FndW5Ee...] 
+        - in: header
+          name: Content-Type
+          type: string
+          required: true
+          default: application/x-www-form-urlencoded
+        - in: body
+          name: Payload
+          description: Request Body
+          required: false
+          schema:
+            type: object
+            required:
+              - username
+              - password
+              - scope
+              - grant_type
+            properties:
+              username:
+                type: string
+                example: usrname
+                description: Username for login
+                minLength: 1
+                maxLength: 50
+              password:
+                type: string
+                example: password
+                description: Password for login
+                minLength: 1
+                maxLength: 50
+              scope:
+                type: string
+                example: jgatewayrole
+                description: Scope for login
+                minLength: 1
+                maxLength: 50
+              grant_type:
+                type: string
+                example: password
+                description: grant type
+                minLength: 1
+                maxLength: 50
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlpqUm1ZVE13TlRKak9XVTVNbUl6TWpnek5ESTNZMkl5TW1JeVkyRXpNamRoWmpWaU1qYzBaZz09In0.eyJhdWQiOiJodHRwOlwvXC9vcmcud3NvMi5hcGltZ3RcL2dhdGV3YXkiLCJzdWIiOiJkdW9uZ2JoQGNhcmJvbi5zdXBlciIsImFwcGxpY2F0aW9uIjp7Im93bmVyIjoiZHVvbmdiaCIsInRpZXIiOiJVbmxpbWl0ZWQiLCJuYW1lIjoiRGVmYXVsdEFwcGxpY2F0aW9uIiwiaWQiOjY3LCJ1dWlkIjpudWxsfSwic2NvcGUiOiJqZ2F0ZXdheXJvbGUiLCJpc3MiOiJodHRwczpcL1wvMTkyLjE2OC4xLjI0NDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwidGllckluZm8iOnsiVW5saW1pdGVkIjp7InN0b3BPblF1b3RhUmVhY2giOnRydWUsInNwaWtlQXJyZXN0TGltaXQiOjAsInNwaWtlQXJyZXN0VW5pdCI6bnVsbH19LCJrZXl0eXBlIjoiUFJPRFVDVElPTiIsInN1YnNjcmliZWRBUElzIjpbeyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IkpnYXRld2F5IiwiY29udGV4dCI6IlwvbWJcLzEuMC4wIiwicHVibGlzaGVyIjoiZHVvbmdiaCIsInZlcnNpb24iOiIxLjAuMCIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifV0sImNvbnN1bWVyS2V5IjoiYXJrZFpwT0RjdnFLQ2FndW5EeWtoVzVKV1NjYSIsImV4cCI6MTU5MTc5MDAwMiwiaWF0IjoxNTkxNzg2NDAyLCJqdGkiOiI2Zjk2NzExYS03OTdhLTQ3Y2UtYmIyNi05M2I0NzBiN2ZjNDcifQ.g-Aq0zooJRYTwH1ycznfAEB0UEXcoA5UUXrUhk3dIQM_3FaVoXzM85TXy9s409ffqxcQ-vdyzH8e36vxYwxb3Qf1ZOvsyKh1Kdlv5fCrGLaYghNhqxSnh4pqbskcy0Nra1mmk5FVeTgj6ZcUpQSSyvE3UpMywALaazHxKaL5VsSHNc2g6ENGTSHazf5UmasPPDy8_1Ycf6wNwUJQLfOJk_Nyjbp9917UcdADL_-o8kppHkofLJiHXaUGf6YX2J1DQhNniW0kAGN4thliBXyFXBGJNRu7BryOQeEBXWL3Mr-5OUWSjNPtmINYbfYoGg6lsPfUvMfSZn-cKpPCqq0mQw
+                description: Access token
+              refresh_token:
+                type: string
+                example: 5bc46228-6d3a-382a-99af-bed0fb658641
+                description: Refresh token    
+              scope:
+                type: string
+                example: jgatewayrole
+                description: Your scope 
+              token_type:
+                type: string
+                example: Bearer
+                description: Token type
+              expires_in:
+                type: number
+                example: 3600
+                description: Time to expire token
+
   /login:
     post:
       tags:
