@@ -57,7 +57,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 host: 192.168.1.244:8243
-basePath: /mb/1.0.0
+basePath: /
 tags:
 
   - name: Deposit
@@ -173,7 +173,7 @@ paths:
                 example: 3600
                 description: Time to expire token
 
-  /login:
+  /mb/1.0.0/login:
     post:
       tags:
         - Deposit
@@ -273,7 +273,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0000:
+  /mb/1.0.0/MB0000:
     post:
       tags:
         - Deposit
@@ -375,7 +375,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0001:
+  /mb/1.0.0/MB0001:
     post:
       tags:
         - Deposit
@@ -608,7 +608,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0002:
+  /mb/1.0.0/MB0002:
     post:
       tags:
         - Deposit
@@ -842,7 +842,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0003:
+  /mb/1.0.0/MB0003:
     post:
       tags:
         - Deposit
@@ -1152,7 +1152,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0004:
+  /mb/1.0.0/MB0004:
     post:
       tags:
         - Deposit
@@ -1325,7 +1325,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0005:
+  /mb/1.0.0/MB0005:
     post:
       tags:
         - Deposit
@@ -1486,7 +1486,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0006:
+  /mb/1.0.0/MB0006:
     post:
       tags:
         - Deposit
@@ -1613,7 +1613,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0007:
+  /mb/1.0.0/MB0007:
     post:
       tags:
         - Deposit
@@ -1864,7 +1864,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0008:
+  /mb/1.0.0/MB0008:
     post:
       tags:
         - Deposit
@@ -2097,7 +2097,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0009:
+  /mb/1.0.0/MB0009:
     post:
       tags:
         - Deposit
@@ -2310,7 +2310,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0010:
+  /mb/1.0.0/MB0010:
     post:
       tags:
         - Deposit
@@ -2569,7 +2569,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0011:
+  /mb/1.0.0/MB0011:
     post:
       tags:
         - Deposit
@@ -2733,7 +2733,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0012:
+  /mb/1.0.0/MB0012:
     post:
       tags:
         - Deposit
@@ -3007,7 +3007,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0013:
+  /mb/1.0.0/MB0013:
     post:
       tags:
         - Deposit
@@ -3186,7 +3186,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB0014:
+  /mb/1.0.0/MB0014:
     post:
       tags:
         - Deposit
@@ -3379,7 +3379,7 @@ paths:
             - jgatewayrole
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /MB1000:
+  /mb/1.0.0/MB1000:
     post:
       tags:
         - Deposit
