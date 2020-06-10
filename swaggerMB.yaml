@@ -34,14 +34,14 @@ info:
         <tr>
           <td>UAT</td>
           <td>Application server</td>
-          <td>•	CPU Intel Xeon x2</br> •	HDD/SSD: 512GB raid 1</br>•	RAM: 16GB </br>•	OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server 64 bit   </td>
-          <td>•	Mulesoft standalone 3.9.0 </br> •	JDK 1.8 </td>
+          <td>•  CPU Intel Xeon x2</br> •  HDD/SSD: 512GB raid 1</br>•  RAM: 16GB </br>•  OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server 64 bit   </td>
+          <td>•  Mulesoft standalone 3.9.0 </br> •  JDK 1.8 </td>
         </tr>
         <tr>
           <td>LIVE</td>
           <td>Application server</td>
-          <td>•	CPU Intel Xeon x2</br> •	HDD/SSD: 512GB raid 1</br>•	RAM: 16GB </br>•	OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server 64 bit   </td>
-          <td>•	Mulesoft standalone 3.9.0 </br> •	JDK 1.8 </td>
+          <td>•  CPU Intel Xeon x2</br> •  HDD/SSD: 512GB raid 1</br>•  RAM: 16GB </br>•  OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server 64 bit   </td>
+          <td>•  Mulesoft standalone 3.9.0 </br> •  JDK 1.8 </td>
         </tr>      
       </table>      
 
@@ -357,8 +357,8 @@ paths:
                         - '99990111100000217'
                         - '99990111100000224'
                         - '99990111100000231'
-                      description: Account number. 9 digits format
-                      maxLength: 9
+                    description: Account number. 9 digits format
+                    maxLength: 9
                   ACCNAME:
                     type: array
                     items:
@@ -367,8 +367,8 @@ paths:
                         - Tin sary
                         - Tin sary
                         - Tin sary
-                      description: Account name
-                      maxLength: 50
+                    description: Account name
+                    maxLength: 50
                   DPTTYPE:
                     type: array
                     items:
@@ -377,13 +377,14 @@ paths:
                         - C
                         - C
                         - C
-                      description: Account status
-                      maxLength: 1
                       enum:
                         - 'T: Fixed deposit'
                         - 'S: Saving deposit'
                         - 'C: Current deposit'
-                        - '-: All'
+                        - '-: All'  
+                    description: Account status
+                    maxLength: 1
+
                   DPTSTS:
                     type: array
                     items:
@@ -392,14 +393,14 @@ paths:
                         - 'N'
                         - 'N'
                         - 'N'
-                      description: Deposit type
-                      maxLength: 1
                       enum:
                         - 'N: Normal' 
                         - 'B: Block'
                         - 'S: Suspense'
                         - 'C: Closed'
                         - 'D: Dormant'
+                    description: Deposit type
+                    maxLength: 1
                   BALANCE:
                     type: array
                     items:
@@ -408,8 +409,8 @@ paths:
                         - 1000
                         - 10000000
                         - 222252988
-                      description: Account balance
-                      maxLength: 25
+                    description: Account balance
+                    maxLength: 25
                   AVABALANCE:
                     type: array
                     items:
@@ -418,8 +419,8 @@ paths:
                         - 1000
                         - 10000000
                         - 222252988
-                      description: Available balance
-                      maxLength: 25
+                    description: Available balance
+                    maxLength: 25
                   CURRENCYID:
                     type: array
                     items:
@@ -428,13 +429,14 @@ paths:
                         - KHR
                         - KHR
                         - USD
-                      description: Currency
-                      maxLength: 3
                       enum:
                        - MMK
                        - USD
                        - LAK
-                       - '...'
+                       - '...'                        
+                    description: Currency
+                    maxLength: 3
+
                   BRANID:
                     type: array
                     items:
@@ -443,8 +445,8 @@ paths:
                         - 203
                         - 203
                         - 203
-                      description: Branch ID
-                      maxLength: 4
+                    description: Branch ID
+                    maxLength: 4
                   ISPKACNO:
                     type: array
                     items:
@@ -453,11 +455,11 @@ paths:
                         - 'N'
                         - 'N'
                         - 'Y'
-                      description: Is this the primary account
-                      maxLength: 1
                       enum:
                        - 'Y: Yes'
                        - 'N: No'
+                    description: Is this the primary account
+                    maxLength: 1
                   CUSCODE:
                     type: string
                     example: 02031000799
@@ -3897,6 +3899,9 @@ paths:
 
 
 
+      
+      
+      
       
       
 securityDefinitions:
