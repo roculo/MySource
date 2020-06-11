@@ -1,0 +1,3999 @@
+openapi: 3.0.1
+info:
+  title: JConnect Mobile
+  description: "\n# Overview\n➤ Jconnect is a web-service between Ebanking system\
+    \ and Core Banking system. It’ll create a connection and allow communicate between\
+    \ two systems. </br> ➤ Ebanking will post transaction with xml format to O9Middleware,\
+    \ O9Middleware will convert/mapping request message from eBanking system to Core\
+    \ Banking transaction message format and perform transaction on Core Banking.\
+    \ After transaction finish on Core Banking, O9Middleware will forward transaction\
+    \ result to eBanking system. </br> ➤ Support multi threads to allow many transactions\
+    \ at the same time. </br> ➤ One transaction must be processed within 60 seconds,\
+    \ eBanking system will waiting response in 60 seconds. </br>  ➤ After that if\
+    \ still haven’t got response from O9Middleware, eBanking system will understand\
+    \ that transaction already errors and post reversal transaction if needed (with\
+    \ fund transfer and top-up transaction). </br> ➤ Supported clients: Restful. </br>\n\
+    \n\n\n# System diagram\n\n  This is System Diagram. </br>\n<img src=\"https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.0-9/101952116_3537488762932723_8160734451366625280_n.jpg?_nc_cat=102&_nc_sid=730e14&_nc_ohc=VQec7zTsp6IAX-maAFU&_nc_ht=scontent.fsgn2-5.fna&oh=a038d497f239ad24a217cd2e61638b91&oe=5EFFED28\"\
+    \ width=100%/>\n# Workflow\n  This is Workflow. </br>\n<img src=\"https://scontent.fsgn2-1.fna.fbcdn.net/v/t1.0-9/101843013_3537488766266056_1440986090725965824_n.jpg?_nc_cat=107&_nc_sid=730e14&_nc_ohc=vJHHEdTjdqoAX8L-3HU&_nc_ht=scontent.fsgn2-1.fna&oh=52bf6857a6c35c8014261760f89384fb&oe=5EFE925C\"\
+    \  width=100%/>  \n# Application requirement\n  <table>\n    <tr>\n      <td>Sts</td>\n\
+    \      <td>SERVER</td>\n      <td>HARDWARE REQUIREMENT</td>\n      <td>SOFTWARE\
+    \ REQUIREMENT</td>        \n    </tr>\n    <tr>\n      <td>UAT</td>\n      <td>Application\
+    \ server</td>\n      <td>•  CPU Intel Xeon x2</br> •  HDD/SSD: 512GB raid 1</br>•\
+    \  RAM: 16GB </br>•  OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server\
+    \ 64 bit   </td>\n      <td>•  Mulesoft standalone 3.9.0 </br> •  JDK 1.8 </td>\n\
+    \    </tr>\n    <tr>\n      <td>LIVE</td>\n      <td>Application server</td>\n\
+    \      <td>•  CPU Intel Xeon x2</br> •  HDD/SSD: 512GB raid 1</br>•  RAM: 16GB\
+    \ </br>•  OS: Windows server 2008 R2 – SP1 – 64 bit </br>or Linux server 64 bit\
+    \   </td>\n      <td>•  Mulesoft standalone 3.9.0 </br> •  JDK 1.8 </td>\n   \
+    \ </tr>      \n  </table>      \n"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 2.9.0
+  x-logo:
+    url: https://jits.com.vn/wp-content/themes/renden/images/Logo.png
+servers:
+- url: https://192.168.1.244:8243/
+- url: http://192.168.1.244:8243/
+security:
+- default: []
+tags:
+- name: Deposit
+  description: Everything about your Deposit
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: ATM
+  description: Everything about your ATM
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+paths:
+  /token:
+    post:
+      tags:
+      - Deposit
+      summary: GetToken
+      description: Use this API to get token access.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Basic {Your Application Key}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Basic YXJrZFpwT0RjdnFLQ2FndW5Ee...
+      - name: Content-Type
+        in: header
+        required: true
+        schema:
+          type: string
+          default: application/x-www-form-urlencoded
+      requestBody:
+        description: Request Body
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+              - grant_type
+              - password
+              - scope
+              - username
+              type: object
+              properties:
+                username:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Username for login
+                  example: usrname
+                password:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Password for login
+                  example: password
+                scope:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Scope for login
+                  example: jgatewayrole
+                grant_type:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Grant type
+                  example: password
+                  default: password
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: Access token
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlpqUm1ZVE13TlRKak9XVTVNbUl6TWpnek5ESTNZMkl5TW1JeVkyRXpNamRoWmpWaU1qYzBaZz09In0.eyJhdWQiOiJodHRwOlwvXC9vcmcud3NvMi5hcGltZ3RcL2dhdGV3YXkiLCJzdWIiOiJkdW9uZ2JoQGNhcmJvbi5zdXBlciIsImFwcGxpY2F0aW9uIjp7Im93bmVyIjoiZHVvbmdiaCIsInRpZXIiOiJVbmxpbWl0ZWQiLCJuYW1lIjoiRGVmYXVsdEFwcGxpY2F0aW9uIiwiaWQiOjY3LCJ1dWlkIjpudWxsfSwic2NvcGUiOiJqZ2F0ZXdheXJvbGUiLCJpc3MiOiJodHRwczpcL1wvMTkyLjE2OC4xLjI0NDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwidGllckluZm8iOnsiVW5saW1pdGVkIjp7InN0b3BPblF1b3RhUmVhY2giOnRydWUsInNwaWtlQXJyZXN0TGltaXQiOjAsInNwaWtlQXJyZXN0VW5pdCI6bnVsbH19LCJrZXl0eXBlIjoiUFJPRFVDVElPTiIsInN1YnNjcmliZWRBUElzIjpbeyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IkpnYXRld2F5IiwiY29udGV4dCI6IlwvbWJcLzEuMC4wIiwicHVibGlzaGVyIjoiZHVvbmdiaCIsInZlcnNpb24iOiIxLjAuMCIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifV0sImNvbnN1bWVyS2V5IjoiYXJrZFpwT0RjdnFLQ2FndW5EeWtoVzVKV1NjYSIsImV4cCI6MTU5MTc5MDAwMiwiaWF0IjoxNTkxNzg2NDAyLCJqdGkiOiI2Zjk2NzExYS03OTdhLTQ3Y2UtYmIyNi05M2I0NzBiN2ZjNDcifQ.g-Aq0zooJRYTwH1ycznfAEB0UEXcoA5UUXrUhk3dIQM_3FaVoXzM85TXy9s409ffqxcQ-vdyzH8e36vxYwxb3Qf1ZOvsyKh1Kdlv5fCrGLaYghNhqxSnh4pqbskcy0Nra1mmk5FVeTgj6ZcUpQSSyvE3UpMywALaazHxKaL5VsSHNc2g6ENGTSHazf5UmasPPDy8_1Ycf6wNwUJQLfOJk_Nyjbp9917UcdADL_-o8kppHkofLJiHXaUGf6YX2J1DQhNniW0kAGN4thliBXyFXBGJNRu7BryOQeEBXWL3Mr-5OUWSjNPtmINYbfYoGg6lsPfUvMfSZn-cKpPCqq0mQw
+                  refresh_token:
+                    type: string
+                    description: Refresh token
+                    example: 5bc46228-6d3a-382a-99af-bed0fb658641
+                  scope:
+                    type: string
+                    description: Your scope
+                    example: jgatewayrole
+                  token_type:
+                    type: string
+                    description: Token type
+                    example: Bearer
+                  expires_in:
+                    type: number
+                    description: Time to expire token
+                    example: 3600.0
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: Access token
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlpqUm1ZVE13TlRKak9XVTVNbUl6TWpnek5ESTNZMkl5TW1JeVkyRXpNamRoWmpWaU1qYzBaZz09In0.eyJhdWQiOiJodHRwOlwvXC9vcmcud3NvMi5hcGltZ3RcL2dhdGV3YXkiLCJzdWIiOiJkdW9uZ2JoQGNhcmJvbi5zdXBlciIsImFwcGxpY2F0aW9uIjp7Im93bmVyIjoiZHVvbmdiaCIsInRpZXIiOiJVbmxpbWl0ZWQiLCJuYW1lIjoiRGVmYXVsdEFwcGxpY2F0aW9uIiwiaWQiOjY3LCJ1dWlkIjpudWxsfSwic2NvcGUiOiJqZ2F0ZXdheXJvbGUiLCJpc3MiOiJodHRwczpcL1wvMTkyLjE2OC4xLjI0NDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwidGllckluZm8iOnsiVW5saW1pdGVkIjp7InN0b3BPblF1b3RhUmVhY2giOnRydWUsInNwaWtlQXJyZXN0TGltaXQiOjAsInNwaWtlQXJyZXN0VW5pdCI6bnVsbH19LCJrZXl0eXBlIjoiUFJPRFVDVElPTiIsInN1YnNjcmliZWRBUElzIjpbeyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IkpnYXRld2F5IiwiY29udGV4dCI6IlwvbWJcLzEuMC4wIiwicHVibGlzaGVyIjoiZHVvbmdiaCIsInZlcnNpb24iOiIxLjAuMCIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifV0sImNvbnN1bWVyS2V5IjoiYXJrZFpwT0RjdnFLQ2FndW5EeWtoVzVKV1NjYSIsImV4cCI6MTU5MTc5MDAwMiwiaWF0IjoxNTkxNzg2NDAyLCJqdGkiOiI2Zjk2NzExYS03OTdhLTQ3Y2UtYmIyNi05M2I0NzBiN2ZjNDcifQ.g-Aq0zooJRYTwH1ycznfAEB0UEXcoA5UUXrUhk3dIQM_3FaVoXzM85TXy9s409ffqxcQ-vdyzH8e36vxYwxb3Qf1ZOvsyKh1Kdlv5fCrGLaYghNhqxSnh4pqbskcy0Nra1mmk5FVeTgj6ZcUpQSSyvE3UpMywALaazHxKaL5VsSHNc2g6ENGTSHazf5UmasPPDy8_1Ycf6wNwUJQLfOJk_Nyjbp9917UcdADL_-o8kppHkofLJiHXaUGf6YX2J1DQhNniW0kAGN4thliBXyFXBGJNRu7BryOQeEBXWL3Mr-5OUWSjNPtmINYbfYoGg6lsPfUvMfSZn-cKpPCqq0mQw
+                  refresh_token:
+                    type: string
+                    description: Refresh token
+                    example: 5bc46228-6d3a-382a-99af-bed0fb658641
+                  scope:
+                    type: string
+                    description: Your scope
+                    example: jgatewayrole
+                  token_type:
+                    type: string
+                    description: Token type
+                    example: Bearer
+                  expires_in:
+                    type: number
+                    description: Time to expire token
+                    example: 3600.0
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/login:
+    post:
+      tags:
+      - Deposit
+      summary: Login API
+      description: We will description login api here.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - PASSWORD
+              - USERNAME
+              type: object
+              properties:
+                USERNAME:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Username for login
+                  example: usrname
+                PASSWORD:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Password for login
+                  example: password
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      SESSIONID:
+                        maxLength: 36
+                        type: string
+                        description: Session ID
+                        example: 00000170-38b1-876b-0000-017038b18774
+                      WORKINGDATE:
+                        maxLength: 10
+                        type: string
+                        description: Working date
+                        example: 13/02/2020
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0000:
+    post:
+      tags:
+      - Deposit
+      summary: Reversal transaction
+      description: The function is to reverse the fund transfer transaction.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - DESCS
+              - ID
+              - SESSIONID
+              - TXREFCD
+              type: object
+              properties:
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: SessionId when you login to Core Banking
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+                TXREFCD:
+                  maxLength: 20
+                  minLength: 1
+                  type: string
+                  description: Id of transaction need to reverse
+                  example: "10000000000000005041"
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: Id of this transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  type: string
+                  description: Description of transaction
+                  example: Reversal Message!
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: string
+                    example: ""
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0001:
+    post:
+      tags:
+      - Deposit
+      summary: Get account list by customer code
+      description: 'This function will return account list of a customer by customer
+        code and customer type. '
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - CUSCODE
+              - DESCS
+              - DPTTYPE
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                CUSCODE:
+                  maxLength: 15
+                  minLength: 1
+                  type: string
+                  description: Customer Code
+                  example: 2.031000799E9
+                DPTTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Deposit type
+                  example: C
+                  enum:
+                  - 'C: Current deposit'
+                  - 'S: Saving deposit'
+                  - 'T: Fixed deposit'
+                  - '-: All'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: Get account list by cuscode!
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCNUM:
+                        type: array
+                        description: Account number. 9 digits format
+                        items:
+                          type: string
+                          example: ""
+                      ACCNAME:
+                        type: array
+                        description: Account name
+                        items:
+                          type: string
+                          example: ""
+                      DPTTYPE:
+                        type: array
+                        description: Account status
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'T: Fixed deposit'
+                          - 'S: Saving deposit'
+                          - 'C: Current deposit'
+                          - '-: All'
+                      DPTSTS:
+                        type: array
+                        description: Deposit type
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'N: Normal'
+                          - 'B: Block'
+                          - 'S: Suspense'
+                          - 'C: Closed'
+                          - 'D: Dormant'
+                      BALANCE:
+                        type: array
+                        description: Account balance
+                        items:
+                          type: number
+                      AVABALANCE:
+                        type: array
+                        description: Available balance
+                        items:
+                          type: number
+                      CURRENCYID:
+                        type: array
+                        description: Currency
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - MMK
+                          - USD
+                          - LAK
+                          - '...'
+                      BRANID:
+                        type: array
+                        description: Branch ID
+                        items:
+                          type: number
+                      ISPKACNO:
+                        type: array
+                        description: Is this the primary account
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'Y: Yes'
+                          - 'N: No'
+                      CUSCODE:
+                        maxLength: 15
+                        type: string
+                        description: Customer code
+                        example: 2.031000799E9
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0002:
+    post:
+      tags:
+      - Deposit
+      summary: Get account list by mobile number
+      description: This function will return account list of a customer by mobile
+        phone number.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - DESCS
+              - DPTTYPE
+              - ID
+              - PHONENO
+              - SESSIONID
+              type: object
+              properties:
+                PHONENO:
+                  maxLength: 15
+                  minLength: 1
+                  type: string
+                  description: Mobile phone number
+                  example: 9.23888333E8
+                DPTTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Deposit type
+                  example: C
+                  enum:
+                  - 'T: Fixed deposit'
+                  - 'S: Saving deposit'
+                  - 'C: Current deposit'
+                  - '-: All'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Session ID
+                  example: Get account list by mobile number!
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Description
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCNUM:
+                        type: array
+                        description: Account number. 9 digits format
+                        items:
+                          type: string
+                          example: ""
+                      ACCNAME:
+                        type: array
+                        description: Account name
+                        items:
+                          type: string
+                          example: ""
+                      DPTTYPE:
+                        type: array
+                        description: Account status
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'T: Fixed deposit'
+                          - 'S: Saving deposit'
+                          - 'C: Current deposit'
+                          - '-: All'
+                      DPTSTS:
+                        type: array
+                        description: Account type
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'N: Normal'
+                          - 'B: Block'
+                          - 'S: Suspense'
+                          - 'C: Closed'
+                          - 'D: Dormant'
+                      BALANCE:
+                        type: array
+                        description: Account balance
+                        items:
+                          type: number
+                      AVABALANCE:
+                        type: array
+                        description: Available balance
+                        items:
+                          type: number
+                      CURRENCYID:
+                        type: array
+                        description: Currency
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - MMK
+                          - USD
+                          - LAK
+                          - '...'
+                      BRANID:
+                        type: array
+                        description: Branch ID
+                        items:
+                          type: number
+                      ISPKACNO:
+                        type: array
+                        description: Is this the primary account
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'Y: Yes'
+                          - 'N: No'
+                      PHONENO:
+                        maxLength: 15
+                        type: string
+                        description: Mobile phone number
+                        example: 9.23888333E8
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0003:
+    post:
+      tags:
+      - Deposit
+      summary: Register new deposit account
+      description: The function is to register a deposit account.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - ACCNAME
+              - ACCTYPE
+              - ADDRESS
+              - BRANID
+              - CATCODE
+              - COMMUNE
+              - CTYPE
+              - CUSNAME
+              - DESC
+              - DISTRICT
+              - DOB
+              - EMAIL
+              - GENDER
+              - GRPNO
+              - HOMENUM
+              - HOUSENO
+              - ID
+              - ISPKACNO
+              - KYC
+              - MOBILENUM
+              - NATIONNUM
+              - NATIONTYPE
+              - PROVINCE
+              - SESSIONID
+              - STRNO
+              - TITLE
+              - VILLAGE
+              type: object
+              properties:
+                CUSNAME:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Customer Name
+                  example: TestCustomer
+                BRANID:
+                  maxLength: 4
+                  minLength: 1
+                  type: string
+                  description: Branch ID
+                  example: "203"
+                NATIONTYPE:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: National Type
+                  example: N
+                  enum:
+                  - 'N: Nation ID'
+                  - 'D: Drivers Licence '
+                  - 'F: Family Book'
+                  - 'G: Government Issued '
+                  - 'B: Birth Certificate'
+                  - 'R:Resident Book '
+                  - O:Other
+                  - P:Passport
+                NATIONNUM:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: National Number
+                  example: "123456789"
+                DOB:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: Day of Birth
+                  example: 14/02/2000
+                  enum:
+                  - DD/MM/YYYY
+                TITLE:
+                  maxLength: 4
+                  minLength: 1
+                  type: string
+                  description: Title of customer
+                  example: MR
+                  enum:
+                  - MRS
+                  - MS
+                  - MR
+                ADDRESS:
+                  maxLength: 100
+                  minLength: 0
+                  type: string
+                  description: Address
+                  example: Test
+                EMAIL:
+                  maxLength: 50
+                  minLength: 0
+                  type: string
+                  description: Email of customer
+                  example: testcustomer@gmail.com
+                HOMENUM:
+                  maxLength: 24
+                  minLength: 0
+                  type: string
+                  description: Home number of customer
+                  example: ""
+                MOBILENUM:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: Mobile number of customer. Unique field
+                  example: 9.2123456789E10
+                GENDER:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Gender of customer
+                  example: M
+                  enum:
+                  - 'F: Female'
+                  - 'M: Male'
+                  - 'U: Unknown'
+                CTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Customer Type
+                  example: S
+                  enum:
+                  - 'O:Employee '
+                  - 'M:Manager '
+                  - B:Enterprise
+                  - S:Individual
+                PROVINCE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Province
+                  example: ""
+                DISTRICT:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: District
+                  example: ""
+                COMMUNE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Commune
+                  example: ""
+                VILLAGE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Village
+                  example: ""
+                GRPNO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Group No
+                  example: ""
+                STRNO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Street No
+                  example: ""
+                HOUSENO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: House No
+                  example: ""
+                KYC:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: KYC status
+                  example: 0X
+                  enum:
+                  - '0X: Checked KYC'
+                  - '1X: Politically exposed person'
+                  - '2X: Blacklist individual'
+                  - '3X: Blacklist institution'
+                  - '4X: Predicate of offence'
+                  - '5X: Suspicious transaction'
+                  - '6X: Unclear destination of funds'
+                  - '7X: Mobile-KYC'
+                ACCNAME:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Account Name
+                  example: TestAccount
+                CATCODE:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: Catalog Code
+                  example: "123"
+                ACCTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Deposit account Type
+                  example: "1"
+                ISPKACNO:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Is this the primary account
+                  example: Y
+                  enum:
+                  - '‘Y’: Yes'
+                  - '‘N’: No'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+                DESC:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: description
+                  example: description
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CUSCODE:
+                        maxLength: 15
+                        type: string
+                        description: Customer Code
+                        example: 2.031000799E9
+                      ACCNUM:
+                        maxLength: 9
+                        type: string
+                        description: Account Number.  9 digits format
+                        example: "99990111100000217"
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0004:
+    post:
+      tags:
+      - Deposit
+      summary: Get the detailed transaction history
+      description: The function is to get the detailed transaction history
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - CBSID
+              - DESCS
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                CBSID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: Transaction Number on CBS
+                  example: "190914000008329776"
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CBSID:
+                        maxLength: 50
+                        type: string
+                        description: Transaction Number on CBS
+                        example: "190914000008329776"
+                      TRANDATE:
+                        maxLength: 20
+                        type: string
+                        description: Transaction date
+                        example: 13/02/2020 19:36:59
+                        enum:
+                        - DD/MM/YYYY HH24:MI:SS
+                      ACCNUM:
+                        type: array
+                        description: Account number.  9 digits format
+                        items:
+                          type: string
+                          example: ""
+                      ACCNAME:
+                        type: array
+                        description: Account name
+                        items:
+                          type: string
+                          example: ""
+                      DORC:
+                        type: array
+                        description: Debit or Credit
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'D: Debit'
+                          - 'C: Credit'
+                      AMT:
+                        type: array
+                        description: Transaction amount
+                        items:
+                          type: number
+                      DESCS:
+                        type: array
+                        description: Description
+                        items:
+                          type: string
+                          example: ""
+                      DEBITFEE:
+                        type: number
+                        description: Transaction fee paid by Debit account. Fund transfer
+                          transaction only
+                        example: 10.0
+                      CREDITFEE:
+                        type: number
+                        description: Transaction fee paid by Credit account. Fund
+                          transfer transaction only
+                        example: 0.0
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0005:
+    post:
+      tags:
+      - Deposit
+      summary: Get the list of products
+      description: The function is to get the list of catalogues based on deposit
+        type.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - DESCS
+              - DPTTYPE
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                DPTTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Deposit type
+                  example: S
+                  enum:
+                  - 'T: Fixed deposit'
+                  - 'S: Saving deposit'
+                  - 'C: Current deposit'
+                  - '-: All'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: SDescription
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CATCODE:
+                        type: array
+                        description: Catalogue Code
+                        items:
+                          type: string
+                          example: ""
+                      CATNAME:
+                        type: array
+                        description: Catalogue Name
+                        items:
+                          type: string
+                          example: ""
+                      STATUS:
+                        type: array
+                        description: Catalogue Status
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - 'N: Normal'
+                          - 'C: Closed'
+                      CURRENCYID:
+                        type: array
+                        description: Currency ID
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - KHR
+                          - USD
+                          - THB
+                          - '...'
+                      CATDESCS:
+                        type: array
+                        description: Catalogue Description
+                        items:
+                          type: string
+                          example: ""
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0006:
+    post:
+      tags:
+      - Deposit
+      summary: Check customer information by ID Card number
+      description: The function is to check if the customer exists
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - DESCS
+              - ID
+              - IDCARDNUM
+              - IDCARDTYPE
+              - SESSIONID
+              type: object
+              properties:
+                IDCARDNUM:
+                  maxLength: 15
+                  minLength: 1
+                  type: string
+                  description: ID card number
+                  example: "170063346"
+                IDCARDTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: ID card type
+                  example: N
+                  enum:
+                  - 'N: Nation ID'
+                  - 'D: Drivers Licence '
+                  - 'F: Family Book'
+                  - 'G: Government Issued '
+                  - 'B: Birth Certificate'
+                  - 'R:Resident Book '
+                  - O:Other
+                  - P:Passport
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      RESULT:
+                        maxLength: 1
+                        type: string
+                        description: Result exist or not exist
+                        example: Y
+                        enum:
+                        - “Y” customer exit already
+                        - “N” Customer not exit
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0007:
+    post:
+      tags:
+      - Deposit
+      summary: Transaction history by date time
+      description: The function will check transaction history by date time of a deposit
+        account.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - ACCNUM
+              - DESCS
+              - FROMDT
+              - ID
+              - MRECORD
+              - SESSIONID
+              - SRECORD
+              - TODT
+              type: object
+              properties:
+                ACCNUM:
+                  maxLength: 9
+                  minLength: 1
+                  type: string
+                  description: Account number.  9 digits format
+                  example: "99990111100000217"
+                FROMDT:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: From date
+                  example: 13/02/2020
+                  enum:
+                  - DD/MM/YYYY
+                TODT:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: To date
+                  example: 13/02/2020
+                  enum:
+                  - DD/MM/YYYY
+                SRECORD:
+                  maxLength: 20
+                  minLength: 1
+                  type: string
+                  description: Start record want to get
+                  example: "1"
+                MRECORD:
+                  maxLength: 20
+                  minLength: 1
+                  type: string
+                  description: Number of record want to get
+                  example: "10"
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      TRANREF:
+                        type: array
+                        description: Transaction Reference Number
+                        items:
+                          type: string
+                          example: ""
+                      TRANTYPE:
+                        type: array
+                        description: 'Transaction Type: Fund transfer, Cash deposit,
+                          Cash withdraw... '
+                        items:
+                          type: string
+                          example: ""
+                      TRANDATE:
+                        type: array
+                        description: Transaction date
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - DD/MM/YYYY HH24:MI:SS
+                      DEBIT:
+                        type: array
+                        description: Debit amount
+                        items:
+                          type: number
+                      CREDIT:
+                        type: array
+                        description: Credit amount
+                        items:
+                          type: number
+                      CURRENCYID:
+                        type: array
+                        description: Currency
+                        items:
+                          type: string
+                          example: ""
+                          enum:
+                          - USD
+                          - KHR
+                          - '...'
+                      DESCRIPTION:
+                        type: array
+                        description: Transaction description
+                        items:
+                          type: string
+                          example: ""
+                      CBSID:
+                        type: array
+                        description: Transaction Number on CBS
+                        items:
+                          type: string
+                          example: ""
+                      CHANNELID:
+                        type: array
+                        description: 'Transaction Source. MB-> Mobile, O9-> Teller
+                          channel, AT: MPOS'
+                        items:
+                          type: string
+                          example: ""
+                      BALANCE:
+                        type: array
+                        description: Account balance
+                        items:
+                          type: number
+                      FULLPAGE:
+                        maxLength: 1
+                        type: string
+                        description: Full history return or not
+                        example: Y
+                        enum:
+                        - “N” Not fully return
+                        - “Y” Fully return
+                      CLOSINGBALANCE:
+                        type: number
+                        description: Account closing balance
+                        example: 0.0
+                      ACCNAME:
+                        maxLength: 50
+                        type: string
+                        description: Account name
+                        example: TestAccount01
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0008:
+    post:
+      tags:
+      - Deposit
+      summary: Query customer information
+      description: The function is to query a customer information into CBS by customer
+        code
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - CUSCODE
+              - DESCS
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                CUSCODE:
+                  maxLength: 15
+                  minLength: 1
+                  type: string
+                  description: Customer Code
+                  example: 2.031000799E9
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CUSNAME:
+                        maxLength: 50
+                        type: string
+                        description: Customer Name
+                        example: Tin sary
+                      BRANID:
+                        type: number
+                        description: Branch ID
+                        example: 203.0
+                      NATIONTYPE:
+                        maxLength: 2
+                        type: string
+                        description: National Type
+                        example: N
+                        enum:
+                        - 'N: Nation ID'
+                        - 'D: Drivers Licence '
+                        - 'F: Family Book'
+                        - 'G: Government Issued '
+                        - 'B: Birth Certificate'
+                        - 'R:Resident Book '
+                        - O:Other
+                        - P:Passport
+                      NATIONNUM:
+                        maxLength: 24
+                        type: string
+                        description: National Number
+                        example: "170063346"
+                      DOB:
+                        maxLength: 10
+                        type: string
+                        description: Day of Birth
+                        example: 07/06/1963
+                        enum:
+                        - DD/MM/YYYY
+                      TITLE:
+                        maxLength: 4
+                        type: string
+                        description: Title of customer
+                        example: MR
+                        enum:
+                        - MRS
+                        - MR
+                        - MS
+                      ADDRESSDETAIL:
+                        maxLength: 100
+                        type: string
+                        description: Address of customer
+                        example: ""
+                      EMAIL:
+                        maxLength: 50
+                        type: string
+                        description: Email of customer
+                        example: ""
+                      HOMENUM:
+                        maxLength: 24
+                        type: string
+                        description: Home number of customer
+                        example: 9.2564468E7
+                      MOBILENUM:
+                        maxLength: 24
+                        type: string
+                        description: Mobile number of customer.Unique field
+                        example: "02133455543"
+                      GENDER:
+                        maxLength: 1
+                        type: string
+                        description: Gender of customer
+                        example: M
+                        enum:
+                        - F:Female
+                        - 'M: Male'
+                        - 'U: Unknown'
+                      PROVINCE:
+                        maxLength: 20
+                        type: string
+                        description: Province
+                        example: ""
+                      DISTRICT:
+                        maxLength: 20
+                        type: string
+                        description: District
+                        example: ""
+                      COMMUNE:
+                        maxLength: 20
+                        type: string
+                        description: Commune
+                        example: ""
+                      VILLAGE:
+                        maxLength: 20
+                        type: string
+                        description: Village
+                        example: ""
+                      GRPNO:
+                        maxLength: 20
+                        type: string
+                        description: Group No
+                        example: ""
+                      STRNO:
+                        maxLength: 20
+                        type: string
+                        description: Street No
+                        example: ""
+                      HOUSENO:
+                        maxLength: 20
+                        type: string
+                        description: House No
+                        example: ""
+                      KYC:
+                        maxLength: 2
+                        type: string
+                        description: KYC status
+                        example: 1X
+                        enum:
+                        - '0X: Checked KYC'
+                        - '1X: Politically exposed person'
+                        - '2X: Blacklist individual'
+                        - '3X: Blacklist institution'
+                        - '4X: Predicate of offence'
+                        - '5X: Suspicious transaction'
+                        - '6X: Unclear destination of funds'
+                        - '7X: Mobile-KYC'
+                      CUSCODE:
+                        maxLength: 15
+                        type: string
+                        description: Customer Code
+                        example: 2.031000799E9
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0009:
+    post:
+      tags:
+      - Deposit
+      summary: Query account information
+      description: The function is to query an account information by account number
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - ACCNUM
+              - DESCS
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                ACCNUM:
+                  maxLength: 9
+                  minLength: 1
+                  type: string
+                  description: Account Number ID. 9 digits format
+                  example: "99990111100000217"
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CUSCODE:
+                        maxLength: 15
+                        type: string
+                        description: Customer Code
+                        example: 2.031000799E9
+                      ACCNAME:
+                        maxLength: 50
+                        type: string
+                        description: Account Name
+                        example: Tin sary
+                      BRANID:
+                        type: number
+                        description: Branch ID
+                        example: 203.0
+                      CURRENCYID:
+                        maxLength: 3
+                        type: string
+                        description: Currency ID
+                        example: KHR
+                        enum:
+                        - KHR
+                        - USD
+                        - '...'
+                      STATUS:
+                        maxLength: 1
+                        type: string
+                        description: Account Status
+                        example: N
+                        enum:
+                        - 'N: Normal'
+                        - 'B: Block'
+                        - 'S: Suspense'
+                        - 'C: Closed'
+                        - 'D: Dormant'
+                      CUSTYPE:
+                        maxLength: 1
+                        type: string
+                        description: Customer Type
+                        example: C
+                        enum:
+                        - 'C: Single customer'
+                        - 'G: Group of customer'
+                        - 'l: Customer linkage'
+                      DPTTYPE:
+                        maxLength: 2
+                        type: string
+                        description: Deposit Type
+                        example: C
+                        enum:
+                        - 'S: Saving'
+                        - 'C: Current'
+                        - 'T: Fixed Deposit'
+                      OPNDATE:
+                        maxLength: 10
+                        type: string
+                        description: Opening Date
+                        example: 14/09/2019
+                        enum:
+                        - DD/MM/YYYY
+                      BALANCE:
+                        type: number
+                        description: Balance of account
+                        example: 1000.0
+                      AVABALANCE:
+                        type: number
+                        description: Available Balance of account
+                        example: 1000.0
+                      LASTDATE:
+                        maxLength: 100
+                        type: string
+                        description: Last transaction date
+                        example: 14/09/2019
+                        enum:
+                        - DD/MM/YYYY
+                      EMKBALANCE:
+                        type: number
+                        description: Block Balance
+                        example: 0.0
+                      CATCODE:
+                        maxLength: 10
+                        type: string
+                        description: Catalogue code
+                        example: "11100"
+                      ACCTYPE:
+                        maxLength: 2
+                        type: string
+                        description: Account type
+                        example: "1"
+                      ISPKACNO:
+                        maxLength: 1
+                        type: string
+                        description: Is this the primary account
+                        example: Y
+                        enum:
+                        - '‘Y’: Yes'
+                        - '‘N’: No'
+                      TERM:
+                        maxLength: 100
+                        type: string
+                        description: Tenor of account
+                        example: 2 Months
+                      ACCNUM:
+                        maxLength: 9
+                        type: string
+                        description: Account Number
+                        example: "99990111100000217"
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0010:
+    post:
+      tags:
+      - Deposit
+      summary: Fund transfer
+      description: "The function for fund transfer. Support for cross currency. Transaction\
+        \ amount is based on the currency of the debit account. Credit fee is based\
+        \ on the currency of the credit account. Debit fee is based on the currency\
+        \ of the debit account. Using CA for buy and CB for sell. </br> <h1> Posting</h1>\
+        \ <table>\n  <tr>\n    <td>Account</td>\n    <td>Account Description</td>\n\
+        \    <td>HARDWARE Transaction Description</td>\n    <td>SOFTWARE Currency</td>\n\
+        \    <td>HARDWARE Debit</td>\n    <td>SOFTWARE Credit</td>        \n  </tr>\n\
+        \  <tr>\n    <td>DEBITACC</td>\n    <td>Debit account</td>\n    <td>Transaction\
+        \ amount</td>\n    <td>Debit account currency</td>\n    <td>AMT</td>\n   \
+        \ <td></td>\n  </tr>\n  <tr>\n    <td>CREDITACC</td>\n    <td>Credit account</td>\n\
+        \    <td>Transaction amount</td>\n    <td>Credit  account currency</td>\n\
+        \    <td></td>\n    <td>AMT(Follow the Debit account currency)</td>\n  </tr>\
+        \    \n  <tr>\n    <td>DEBITACC</td>\n    <td>Dedit account</td>\n    <td>Fee\
+        \ paid by Debit account</td>\n    <td>Debit account currency</td>\n    <td>DEBITFEE</td>\n\
+        \    <td></td>\n  </tr>     \n  <tr>\n    <td>FEEACC</td>\n    <td>GL account\
+        \ receives fee</td>\n    <td>Fee paid by Debit account</td>\n    <td>GL currency</td>\n\
+        \    <td></td>\n    <td>DEBITFEE(Follow the Debit account currency)</td>\n\
+        \  </tr>     \n  <tr>\n    <td>CREDITACC</td>\n    <td>Credit account</td>\n\
+        \    <td>Fee paid by Crebit account</td>\n    <td>Credit account currency</td>\n\
+        \    <td>CREDITFEE</td>\n    <td></td>\n  </tr>  \n  <tr>\n    <td>FEEACC</td>\n\
+        \    <td>GL account receives fee</td>\n    <td>Fee paid by Crebit account</td>\n\
+        \    <td>GL currency</td>\n    <td></td>\n    <td>CREBITFEE(Follow the Debit\
+        \ account currency)</td>\n  </tr>           \n</table>      \n"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - AMT
+              - CREDITACC
+              - CREDITFEE
+              - DEBITACC
+              - DEBITFEE
+              - DESCS
+              - FEEACC
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+                CREDITACC:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Credit account number
+                  example: "81.0"
+                DEBITACC:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Debit account number
+                  example: "82.0"
+                AMT:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Transaction amount.
+                  example: "10"
+                DEBITFEE:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Fee paid by Debit account.  9 digits format
+                  example: "0"
+                CREDITFEE:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Fee paid by Credit account.  9 digits format
+                  example: "0"
+                FEEACC:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: GL account receives fee. GL accounts only
+                  example: "14080129650212"
+                ID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: BHD00009
+                DESCS:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Description
+                  example: Funds Transfer!
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CBSID:
+                        maxLength: 50
+                        type: string
+                        description: Transaction number on CBS
+                        example: "190914000008329776"
+                      DEBITACC:
+                        maxLength: 25
+                        type: string
+                        description: Debit account number
+                        example: "99990111100000255"
+                      DEBITAVABAL:
+                        type: number
+                        description: Available balance of the debit account
+                        example: 1123202.0
+                      DEBITBAL:
+                        type: number
+                        description: Balance of the debit account
+                        example: 1123202.0
+                      DEBITEMKBAL:
+                        type: number
+                        description: Blocked balance of the debit account
+                        example: 0.0
+                      DEBITCCRCD:
+                        maxLength: 3
+                        type: string
+                        description: Currency of the debit account
+                        example: KHR
+                      CREDITACC:
+                        maxLength: 25
+                        type: string
+                        description: Credit account number
+                        example: "99990111100000217"
+                      CREDITAVABAL:
+                        type: number
+                        description: Available balance of the credit account
+                        example: 1020.0
+                      CREDITBAL:
+                        type: number
+                        description: Balance of the credit account
+                        example: 1020.0
+                      CREDITEMKBAL:
+                        type: number
+                        description: Blocked balance of the credit account
+                        example: 0.0
+                      CREDITCCRCD:
+                        maxLength: 3
+                        type: string
+                        description: Currency of the credit account
+                        example: KHR
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0011:
+    post:
+      tags:
+      - Deposit
+      summary: Get deposit product details
+      description: The function is to get deposit product details.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - CATCODE
+              - DESCS
+              - ID
+              - SESSIONID
+              type: object
+              properties:
+                CATCODE:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: Catalogue code
+                  example: "1234"
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST0000
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: ""
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error Code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CATNAME:
+                        maxLength: 100
+                        type: string
+                        description: Catalogue Name
+                        example: Saving 1
+                      STATUS:
+                        maxLength: 1
+                        type: string
+                        description: Catalogue Status
+                        example: N
+                        enum:
+                        - 'N: Normal'
+                        - 'C: Closed'
+                      CURRENCYID:
+                        maxLength: 3
+                        type: string
+                        description: Currency ID
+                        example: KHR
+                        enum:
+                        - KHR
+                        - USD
+                        - THB
+                        - '...'
+                      DPTTYPE:
+                        maxLength: 1
+                        type: string
+                        description: Deposit type
+                        example: C
+                        enum:
+                        - 'S: Saving'
+                        - 'C: Current'
+                        - 'T: Fixed Deposit'
+                      DPTCLS:
+                        maxLength: 1
+                        type: string
+                        description: Deposit classification
+                        example: N
+                        enum:
+                        - 'B: Normal deposit'
+                        - 'R: Staff deposit'
+                        - 'N: None'
+                      INTRATE:
+                        type: number
+                        description: Interest rate
+                        example: 5.0
+                      TERM:
+                        maxLength: 100
+                        type: string
+                        description: Tenor of account
+                        example: 2 Months
+                      MINBALANCE:
+                        type: number
+                        description: Minimum balance
+                        example: 10000.0
+                      INITBALANCE:
+                        type: number
+                        description: Initial deposit amount
+                        example: 10000.0
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0012:
+    post:
+      tags:
+      - Deposit
+      summary: Register new customer
+      description: The function is to register a customer.
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - ADDRESS
+              - BRANID
+              - COMMUNE
+              - CTYPE
+              - CUSNAME
+              - DISTRICT
+              - DOB
+              - EMAIL
+              - GENDER
+              - GRPNO
+              - HOMENUM
+              - HOUSENO
+              - ID
+              - KYC
+              - MOBILENUM
+              - NATIONNUM
+              - NATIONTYPE
+              - PROVINCE
+              - SESSIONID
+              - STRNO
+              - TITLE
+              - VILLAGE
+              type: object
+              properties:
+                CUSNAME:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Customer Name
+                  example: TestCustomer
+                BRANID:
+                  maxLength: 4
+                  minLength: 1
+                  type: string
+                  description: Branch ID
+                  example: "203"
+                NATIONTYPE:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: National Type
+                  example: N
+                  enum:
+                  - 'N: Nation ID'
+                  - 'D: Drivers Licence '
+                  - 'F: Family Book'
+                  - 'G: Government Issued '
+                  - 'B: Birth Certificate'
+                  - 'R:Resident Book '
+                  - O:Other
+                  - P:Passport
+                NATIONNUM:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: National Number
+                  example: "123456789"
+                DOB:
+                  maxLength: 10
+                  minLength: 1
+                  type: string
+                  description: Day of Birth
+                  example: 14/02/2000
+                  enum:
+                  - DD/MM/YYYY
+                TITLE:
+                  maxLength: 4
+                  minLength: 1
+                  type: string
+                  description: Title of customer
+                  example: MR
+                  enum:
+                  - MRS
+                  - MS
+                  - MR
+                ADDRESS:
+                  maxLength: 100
+                  minLength: 0
+                  type: string
+                  description: Address
+                  example: Test
+                EMAIL:
+                  maxLength: 50
+                  minLength: 0
+                  type: string
+                  description: Email of customer
+                  example: testcustomer@gmail.com
+                HOMENUM:
+                  maxLength: 24
+                  minLength: 0
+                  type: string
+                  description: Home number of customer
+                  example: ""
+                MOBILENUM:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: Mobile number of customer.Unique field
+                  example: 9.2123456789E10
+                GENDER:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Gender of customer
+                  example: M
+                  enum:
+                  - 'F: Female'
+                  - 'M: Male'
+                  - 'U: Unknown'
+                CTYPE:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Customer Type
+                  example: S
+                  enum:
+                  - 'O: Employee '
+                  - 'M: Manager '
+                  - 'B: Enterprise'
+                  - 'S: Individual '
+                PROVINCE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Province
+                  example: ""
+                DISTRICT:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: District
+                  example: ""
+                COMMUNE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Commune
+                  example: ""
+                VILLAGE:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Village
+                  example: ""
+                GRPNO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Group No
+                  example: ""
+                STRNO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: Street No
+                  example: ""
+                HOUSENO:
+                  maxLength: 20
+                  minLength: 0
+                  type: string
+                  description: House No
+                  example: ""
+                KYC:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: KYC status
+                  example: 0X
+                  enum:
+                  - '0X: Checked KYC'
+                  - '1X: Politically exposed person'
+                  - '2X: Blacklist individual'
+                  - '3X: Blacklist institution'
+                  - '4X: Predicate of offence'
+                  - '5X: Suspicious transaction'
+                  - '6X: Unclear destination of funds'
+                  - '7X: Mobile-KYC'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+                DESC:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: description
+                  example: description
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error Code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CUSCODE:
+                        maxLength: 15
+                        type: string
+                        description: Customer Code
+                        example: 2.031000799E9
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0013:
+    post:
+      tags:
+      - Deposit
+      summary: Register new Account with existed Customer
+      description: "The function is to register a deposit account with customer code.\
+        \ \nSupport for multi currency.\nTransaction amount is based on the currency\
+        \ of the Catalogue.\nFee amount is based on the currency of the Catalogue.\n\
+        Using CA for buy and CB for sell.\n"
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - ACCNAME
+              - ACCTYPE
+              - AMT
+              - BRANID
+              - CATCODE
+              - CUSCODE
+              - DEBITACC
+              - DESCS
+              - FEEACC
+              - FEEAMT
+              - ID
+              - ISPKACNO
+              - SESSIONID
+              type: object
+              properties:
+                ACCNAME:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Account Name
+                  example: TestAccount
+                BRANID:
+                  maxLength: 4
+                  minLength: 1
+                  type: string
+                  description: Branch ID of Account
+                  example: "9999"
+                CUSCODE:
+                  maxLength: 15
+                  minLength: 1
+                  type: string
+                  description: Customer Code
+                  example: 2.031000799E9
+                CATCODE:
+                  maxLength: 3
+                  minLength: 1
+                  type: string
+                  description: Catalog Code
+                  example: "123"
+                ACCTYPE:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: Account type
+                  example: "1"
+                ISPKACNO:
+                  maxLength: 1
+                  minLength: 1
+                  type: string
+                  description: Is this the primary account
+                  example: Y
+                  enum:
+                  - '‘Y’: Yes'
+                  - '‘N’: No'
+                DEBITACC:
+                  maxLength: 9
+                  minLength: 1
+                  type: string
+                  description: Source account for debit amount. 9 digits format
+                  example: "999902345"
+                FEEACC:
+                  maxLength: 13
+                  minLength: 1
+                  type: string
+                  description: GL account receives fee. GL accounts only
+                  example: "9990223429501"
+                AMT:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: Deposit amount
+                  example: "1000"
+                FEEAMT:
+                  maxLength: 24
+                  minLength: 1
+                  type: string
+                  description: Fee amount
+                  example: "10"
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: description
+                  example: ""
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: TEST
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCNUM:
+                        maxLength: 9
+                        type: string
+                        description: Account Number
+                        example: "999901111"
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB0014:
+    post:
+      tags:
+      - Deposit
+      summary: Get the latest exchange rate
+      description: The function is to get the latest exchange rate of currencies
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - DESCS
+              - ID
+              - RTYPE
+              - SESSIONID
+              type: object
+              properties:
+                RTYPE:
+                  maxLength: 2
+                  minLength: 1
+                  type: string
+                  description: Exchange rate type. “-“ to retrieve all types.
+                  example: '-'
+                ID:
+                  maxLength: 25
+                  minLength: 1
+                  type: string
+                  description: ID of transaction
+                  example: "9999"
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000171-a18e-1102-0000-0171a18e110b
+                DESCS:
+                  maxLength: 250
+                  minLength: 0
+                  type: string
+                  description: Description
+                  example: "123"
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      CURRENCY:
+                        type: array
+                        description: Currency code
+                        items:
+                          type: string
+                          example: ""
+                      BKRATE:
+                        type: array
+                        description: BK exchange rate
+                        items:
+                          type: number
+                      TBRATE:
+                        type: array
+                        description: TB exchange rate
+                        items:
+                          type: number
+                      TARATE:
+                        type: array
+                        description: TA exchange rate
+                        items:
+                          type: number
+                      CBRATE:
+                        type: array
+                        description: CB exchange rate
+                        items:
+                          type: number
+                      CARATE:
+                        type: array
+                        description: CA exchange rate
+                        items:
+                          type: number
+                      CMRATE:
+                        type: array
+                        description: CM exchange rate
+                        items:
+                          type: number
+                      CSRATE:
+                        type: array
+                        description: CS exchange rate
+                        items:
+                          type: number
+                      INRATE:
+                        type: array
+                        description: IN exchange rate
+                        items:
+                          type: number
+                      JPRATE:
+                        type: array
+                        description: JP exchange rate
+                        items:
+                          type: number
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /mb/1.0.0/MB1000:
+    post:
+      tags:
+      - Deposit
+      summary: Upload Image API
+      description: Upload Image Api by using base64string
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer {Your access token}
+        required: true
+        schema:
+          type: string
+          enum:
+          - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzm1ZVE...
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              required:
+              - BASE64STRING
+              - CUSCODE
+              - FILETYPE
+              - SESSIONID
+              type: object
+              properties:
+                CUSCODE:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                  description: Customer Code(CIF number)
+                  example: 2.031000799E9
+                FILETYPE:
+                  maxLength: 5
+                  minLength: 1
+                  type: string
+                  description: File Type
+                  example: PNG
+                  enum:
+                  - PNG
+                  - JPG
+                BASE64STRING:
+                  minLength: 1
+                  type: string
+                  description: Image in base64 format
+                  example: iVBORw0KGgoAAAANSUhEUgAAANIAAAAzCAYAAADigVZlAAAQN0lEQVR4nO2dCXQTxxnHl0LT5jVteHlN+5q+JCKBJITLmHIfKzBHHCCYBAiEw+I2GIMhDQ0kqQolIRc1SV5e+prmqX3JawgQDL64bK8x2Ajb2Bg7NuBjjSXftmRZhyXZ1nZG1eL1eGa1kg2iyua9X2TvzvHNN/Ofb2Z2ZSiO4ygZGZm+EXADZGSCgYAbICMTDATcABmZYCDgBsjIBAMBN0BGJhgIuAEyMsGA1wQdHZ1UV1cX5XK5qM7OzgcMRuNTrSbTEraq6strhdfzruTk5Wpz8q5c1l7Jyb6szc3K1l7RggtFxcWX2dvVB02mtmVOp3NIV2fnQFie2WyB5QS84TIy/YnXBFBI8BMM/pDqat0XzIVM08lTSVxyytn6jAuZV4FuzmtzclJz8/LT8vML0nJzr54HYkpLS88oTkxMMZ48mchlXrxUX1ffcBCUM8xms8lCkgk6pCT6aZvZvCrzYpbu2PfxHAg8l+obGmOt1vaJQBAPkvI5nM5fWyyWWTU1tfuA+IqOHDvGgehVCK4pA91oGZn+xluCAc0thtj4hCT72XOp9S0thi2FBQWPvb13z9RN61QH5s8NYxbMDct7KXyudt7MGeeWLFrwn8iVKz7auDZy3Z7dbzz91p43B8ZsjYLlDKmprd3/ffwpLjWNqbW32xcFuuEyMv2J2M1BJpMpKiExxZKZeamira1tvvqdt8OWL1l8asq4kNbRzz7NTRo7uuMPo4Y7Rz/zFBc64lluzHNDuZFDFe5PICx25/aY2B3bogf/dd9fKCA+CuytohOSkjuyLmtLXRwXGujGy8j0F8Qbdrt9bDpzQQ8jSHl5+dLt0VsOThgzwj7i6Se5kOHDuIljR9mXRrykjZj/wlVeSONHP8+FhykrJoeOsY8aNoQLAYJa9erShIPvvRsKhQTK/YleX3Pw5KlErpKt+iLQjZeR6S9IN35VXl75r3gw4HU6/Z6ojes/gMKAUQiKBQKiUvvLC1/MXL18WcKsaZOrJ4WObly7euUJsOQ7FjZ9Sh2IVC4oLhihZk6d1LB5/dpt+9R/hnuq4Xl5VwvT0jLKXS7XOHgaCAm0I2Rk+gL2os1mewXsiUw5uXlZn8T9LVI5ZWI1jEQTxozkgECgkDrmKqfrFy8ILwJ7om+3bNoQumTRwtDoqE0fTBsf2ggwg+jVBdOCT7eYwGfnti2bQXA6ME2nr9mbnHLOWV
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000170-38b1-876b-0000-017038b18774
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error Code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 250
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: string
+                    example: ""
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /ATM_CP2P:
+    post:
+      tags:
+      - ATM
+      summary: P to P Credit
+      description: |
+        ATM CP2P Transaction
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                CAMT:
+                  type: number
+                  description: Credit Ammount
+                  example: 1.0
+                CAC:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Credit Account
+                  example: "000000003"
+                CCRCD:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Credit Currency Code
+                  example: "840"
+                DESCS:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Description
+                  example: CP2P Testing
+                AMT:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Amount  number
+                  example: "10"
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000172-116e-0d3c-0000-0172116e0d45
+                ID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: ID Transaction
+                  example: "10000000000000018042"
+                F54:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Field 54 Iso
+                  example: 001013D000000000600006016C000000000000643011012000000040600
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 36
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCOUNT:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Account number
+                        example: "000000003"
+                      BALANCE:
+                        type: number
+                        description: Balance number
+                        example: 82054271.83
+                      AVABALANCE:
+                        type: number
+                        description: Available Balance
+                        example: 82054271.83
+                      EMKAMOUNT:
+                        type: number
+                        description: '...'
+                        example: 1123202.0
+                      CURRENCY:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Type of Currency
+                        example: KHR
+                      F54RESULT:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Field 54 in ISO Return
+                        example: 001013D000000000600006016C000000000000643011012000000040600007C0000000001001161110
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /ATM_DP2P:
+    post:
+      tags:
+      - ATM
+      summary: P to P Debit
+      description: |
+        ATM DP2P Transaction
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                DAMT:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Debit Amount
+                  example: "1"
+                DAC:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Debit Account
+                  example: "000000003"
+                CCRCD:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Currency Code
+                  example: "840"
+                DESCS:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Description
+                  example: DP2P Testing
+                AMT:
+                  type: number
+                  description: Amount number
+                  example: 10.0
+                SESSIONID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Session ID
+                  example: 00000172-116e-0d3c-0000-0172116e0d45
+                ID:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: ID Transaction
+                  example: "10000000000000018042"
+                F54:
+                  maxLength: 36
+                  minLength: 1
+                  type: string
+                  description: Field 54 Iso
+                  example: 001013D000000000600006016C000000000000643011012000000040600
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    description: Error code
+                    example: 0.0
+                  ERRORDESC:
+                    maxLength: 36
+                    type: string
+                    description: Error description
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCOUNT:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Account number
+                        example: "000000003"
+                      BALANCE:
+                        type: number
+                        description: Balance number
+                        example: 82054271.83
+                      AVABALANCE:
+                        type: number
+                        description: Avalable balance number
+                        example: 82054271.83
+                      EMKAMOUNT:
+                        type: number
+                        description: '.....'
+                        example: 1123202.0
+                      CURRENCY:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Currency type
+                        example: KHR
+                      F54RESULT:
+                        maxLength: 36
+                        minLength: 1
+                        type: string
+                        description: Field 54 ISO Result
+                        example: 001013D000000000600006016C000000000000643011012000000040600007C0000000001001161110
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /ATM_CWR:
+    post:
+      tags:
+      - ATM
+      summary: Cash Withdraw
+      description: |
+        ATM Cash Withdraw Transaction
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                DAMT:
+                  type: string
+                  example: "1"
+                DAC:
+                  type: string
+                  example: "000000003"
+                CCRCD:
+                  type: string
+                  example: "840"
+                DESCS:
+                  type: string
+                  example: CWR Testing
+                AMT:
+                  type: string
+                  example: "10"
+                SESSIONID:
+                  type: string
+                  example: 00000172-116e-0d3c-0000-0172116e0d45
+                ID:
+                  type: string
+                  example: "10000000000000018042"
+                F54:
+                  type: string
+                  example: 001013D000000000600006016C000000000000643011012000000040600
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 0.0
+                  ERRORDESC:
+                    type: string
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCOUNT:
+                        type: string
+                        example: "000000003"
+                      BALANCE:
+                        type: string
+                        example: 8.205427183E7
+                      AVABALANCE:
+                        type: string
+                        example: 8.205427183E7
+                      EMKAMOUNT:
+                        type: string
+                        example: "1123202"
+                      CURRENCY:
+                        type: string
+                        example: KHR
+                      F54RESULT:
+                        type: string
+                        example: 001013D000000000600006016C000000000000643011012000000040600007C0000000001001161110
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /ATM_CDP:
+    post:
+      tags:
+      - ATM
+      summary: Cash Deposit
+      description: |
+        ATM Cash Deposit Transaction
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                CAMT:
+                  type: string
+                  example: "1"
+                CAC:
+                  type: string
+                  example: "000000003"
+                CCRCD:
+                  type: string
+                  example: "840"
+                DESCS:
+                  type: string
+                  example: CDP Testing
+                AMT:
+                  type: string
+                  example: "10"
+                SESSIONID:
+                  type: string
+                  example: 00000172-116e-0d3c-0000-0172116e0d45
+                ID:
+                  type: string
+                  example: "10000000000000018042"
+                F54:
+                  type: string
+                  example: 001013D000000000600006016C000000000000643011012000000040600
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 0.0
+                  ERRORDESC:
+                    type: string
+                    example: Transaction successfully!
+                  RESULT:
+                    type: object
+                    properties:
+                      ACCOUNT:
+                        type: string
+                        example: "000000003"
+                      BALANCE:
+                        type: string
+                        example: 8.205427183E7
+                      AVABALANCE:
+                        type: string
+                        example: 8.205427183E7
+                      EMKAMOUNT:
+                        type: string
+                        example: "1123202"
+                      CURRENCY:
+                        type: string
+                        example: KHR
+                      F54RESULT:
+                        type: string
+                        example: 001013D000000000600006016C000000000000643011012000000040600007C0000000001001161110
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+  /ATM_REV:
+    post:
+      tags:
+      - ATM
+      summary: Reversal
+      description: |
+        ATM Reversal Transaction
+      requestBody:
+        description: Request Body
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                TXREFCD:
+                  type: string
+                  example: "10000000000000018404"
+                SESSIONID:
+                  type: string
+                  example: 00000172-116e-0d3c-0000-0172116e0d45
+                ID:
+                  type: string
+                  example: "10000000000000018042"
+                F54:
+                  type: string
+                  example: 001013D000000000600006016C000000000000643011012000000040600
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 0.0
+                  ERRORDESC:
+                    type: string
+                    example: Transaction successfully!
+                  RESULT:
+                    type: string
+                    example: ""
+        405:
+          description: Core Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+        501:
+          description: Not implement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ERRORCODE:
+                    type: number
+                    example: 1.0
+                  ERRORDESC:
+                    type: string
+                    example: Some description!
+                  RESULT:
+                    type: string
+                    example: ""
+      security:
+      - default:
+        - jgatewayrole
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-codegen-request-body-name: Payload
+components:
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://192.168.1.244:8243/token
+          scopes:
+            jgatewayrole: Role for this
+      x-scopes-bindings:
+        jgatewayrole: jgatewayrole
+x-tagGroups:
+- name: Mobile Banking Document
+  tags:
+  - Deposit
+- name: ATM Banking Document
+  tags:
+  - ATM
+x-wso2-auth-header: Authorization
+x-wso2-cors:
+  corsConfigurationEnabled: false
+  accessControlAllowOrigins:
+  - '*'
+  accessControlAllowCredentials: false
+  accessControlAllowHeaders:
+  - authorization
+  - Access-Control-Allow-Origin
+  - Content-Type
+  - SOAPAction
+  accessControlAllowMethods:
+  - GET
+  - PUT
+  - POST
+  - DELETE
+  - PATCH
+  - OPTIONS
+x-wso2-production-endpoints:
+  urls:
+  - http://192.168.1.228:8787/call
+  type: http
+x-wso2-sandbox-endpoints:
+  urls:
+  - http://192.168.1.228:8787/call
+  type: http
+x-wso2-basePath: /mb/1.0.0
+x-wso2-transports:
+- http
+- https
