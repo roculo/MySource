@@ -1,0 +1,15 @@
+[Unit]
+Description=Gobetween - modern LB for cloud era
+Documentation=https://github.com/yyyar/gobetween/wiki
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+PIDFile=/root/gobetween/gobetween.pid
+#ExecStartPre=prestart some command
+ExecStart=/root/gobetween/gobetween -c /root/gobetween/config/gobetween.toml 
+PrivateTmp=true
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
